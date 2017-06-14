@@ -1,0 +1,28 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: collabora
+  name: collabora
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: collabora
+    spec:
+      containers:
+      - env:
+        - name: domain
+        image: collabora/code
+        name: collabora
+        resources: {}
+        securityContext:
+          capabilities:
+            add:
+            - MKNOD
+      restartPolicy: Always
+status: {}

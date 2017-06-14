@@ -1,0 +1,57 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: proxy
+  name: proxy
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: proxy
+    spec:
+      containers:
+      - image: jwilder/nginx-proxy
+        name: proxy
+        ports:
+        - containerPort: 80
+        - containerPort: 443
+        resources: {}
+        volumeMounts:
+        - mountPath: /etc/nginx/conf.d
+          name: proxy-claim0
+        - mountPath: /etc/nginx/vhost.d
+          name: proxy-claim1
+        - mountPath: /usr/share/nginx/html
+          name: proxy-claim2
+        - mountPath: /etc/nginx/certs
+          name: proxy-claim3
+          readOnly: true
+        - mountPath: /tmp/docker.sock
+          name: proxy-claim4
+          readOnly: true
+      restartPolicy: Always
+      volumes:
+      - name: proxy-claim0
+        persistentVolumeClaim:
+          claimName: proxy-claim0
+      - name: proxy-claim1
+        persistentVolumeClaim:
+          claimName: proxy-claim1
+      - name: proxy-claim2
+        persistentVolumeClaim:
+          claimName: proxy-claim2
+      - name: proxy-claim3
+        persistentVolumeClaim:
+          claimName: proxy-claim3
+          readOnly: true
+      - name: proxy-claim4
+        persistentVolumeClaim:
+          claimName: proxy-claim4
+          readOnly: true
+status: {}
