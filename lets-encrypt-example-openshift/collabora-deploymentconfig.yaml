@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: DeploymentConfig
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: collabora
+  name: collabora
+spec:
+  replicas: 1
+  selector:
+    io.kompose.service: collabora
+  strategy:
+    resources: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: collabora
+    spec:
+      containers:
+      - env:
+        - name: domain
+        image: ' '
+        name: collabora
+        resources: {}
+        securityContext:
+          capabilities:
+            add:
+            - MKNOD
+      restartPolicy: Always
+  test: false
+  triggers:
+  - type: ConfigChange
+  - imageChangeParams:
+      automatic: true
+      containerNames:
+      - collabora
+      from:
+        kind: ImageStreamTag
+        name: collabora:latest
+    type: ImageChange
+status: {}
